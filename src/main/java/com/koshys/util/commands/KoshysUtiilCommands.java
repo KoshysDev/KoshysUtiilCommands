@@ -1,5 +1,6 @@
 package com.koshys.util.commands;
 
+import com.koshys.util.commands.Commands.PlayedCommand;
 import com.koshys.util.commands.Commands.RandomTeleportCommand;
 import com.koshys.util.commands.Commands.TimePlayedCommand;
 import net.fabricmc.api.ModInitializer;
@@ -19,6 +20,10 @@ public class KoshysUtiilCommands implements ModInitializer {
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			TimePlayedCommand.register(dispatcher);
+		});
+
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+			PlayedCommand.register(dispatcher);
 		});
 	}
 }

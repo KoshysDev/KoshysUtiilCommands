@@ -26,15 +26,13 @@ import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class RandomTeleportCommand {
-    //change this later, because world border give strange numbers
-
     private static final int MAX_ATTEMPTS = 10; // Maximum attempts to find a safe location
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(literal("randomteleport")
                 .then(argument("target", entity())
                         .then(argument("ignoreArea", IntegerArgumentType.integer(0))
-                                .then(argument("minPlaytimeHours", DoubleArgumentType.doubleArg(0))
+                                .then(argument("maxPlaytimeHours", DoubleArgumentType.doubleArg(0))
                                         .executes(RandomTeleportCommand::execute)
                                 )
                         )
@@ -58,12 +56,12 @@ public class RandomTeleportCommand {
 
         // Get optional parameters
         int ignoreArea = IntegerArgumentType.getInteger(context, "ignoreArea");
-        double minPlaytimeHours = DoubleArgumentType.getDouble(context, "minPlaytimeHours");
+        double maxPlaytimeHours = DoubleArgumentType.getDouble(context, "maxPlaytimeHours");
 
         // Check playtime
         long playTimeTicks = serverPlayerEntity.getStatHandler().getStat(Stats.CUSTOM, Stats.PLAY_TIME);
         double playTimeHours = (double) playTimeTicks / 72000.0;
-        if (playTimeHours < minPlaytimeHours) {
+        if (playTimeHours > maxPlaytimeHours) {
             source.sendFeedback((Supplier<Text>) () -> Text.literal("Ти вже не новачок - мацай травичку"), true);
             return 1;
         }
