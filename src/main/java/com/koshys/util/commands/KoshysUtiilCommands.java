@@ -1,9 +1,6 @@
 package com.koshys.util.commands;
 
-import com.koshys.util.commands.Commands.PlayedCommand;
-import com.koshys.util.commands.Commands.RandomTeleportCommand;
-import com.koshys.util.commands.Commands.SexCommand;
-import com.koshys.util.commands.Commands.TimePlayedCommand;
+import com.koshys.util.commands.Commands.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import org.slf4j.Logger;
@@ -29,6 +26,10 @@ public class KoshysUtiilCommands implements ModInitializer {
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			SexCommand.register(dispatcher);
+		});
+
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+			MobSexCommand.register(dispatcher);
 		});
 	}
 }

@@ -1,4 +1,4 @@
-package com.koshys.util.commands.Commands.Utils;
+package com.koshys.util.commands.Utils;
 
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
