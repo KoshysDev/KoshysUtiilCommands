@@ -1,5 +1,7 @@
 package com.koshys.util.commands.Commands;
 
+import com.google.common.collect.Maps;
+import com.koshys.util.commands.KoshysUtiilCommands;
 import com.koshys.util.commands.Utils.EffectManager;
 import com.koshys.util.commands.Utils.KoshysChatUtils;
 import com.koshys.util.commands.Utils.TranslationHelperUtils;
@@ -7,6 +9,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -21,7 +24,10 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.function.Supplier;
 
 import static com.koshys.util.commands.Utils.EntityUtils.getEntityTypeByName;
 import static com.koshys.util.commands.Utils.EntityUtils.getNearestEntity;
@@ -30,6 +36,8 @@ import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class MobSexCommand {
+    private static final int COOLDOWN_SECONDS = 15; // Cooldown in seconds
+    private static final Map<UUID, Long> cooldowns = Maps.newHashMap(); // Store cooldowns for players
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(
@@ -55,6 +63,21 @@ public class MobSexCommand {
         PlayerEntity player = source.getPlayerOrThrow();
         Vec3d playerPos = player.getPos();
         int ppSize = 5;
+
+        // Check cooldown
+        long currentTime = System.currentTimeMillis();
+        if (cooldowns.containsKey(player.getUuid()) && !Permissions.check(source, KoshysUtiilCommands.MODID+".unlimited.sex")) {
+            long lastUse = cooldowns.get(player.getUuid());
+            long timeSinceLastUse = currentTime - lastUse;
+            if (timeSinceLastUse < COOLDOWN_SECONDS * 1000) {
+                long remainingSeconds = (COOLDOWN_SECONDS * 1000 - timeSinceLastUse) / 1000;
+                source.sendFeedback((Supplier<Text>) () -> Text.literal("Зачекай ще " + remainingSeconds + " секунд перед наступним використанням команди."), true);
+                return 1;
+            }
+        }
+
+        // Set cooldown for the player
+        cooldowns.put(player.getUuid(), currentTime);
 
         String entityName = StringArgumentType.getString(context, "entityName");
         EntityType<?> entityType = getEntityTypeByName(entityName);
