@@ -58,7 +58,7 @@ public class SexCommand {
             long timeSinceLastUse = currentTime - lastUse;
             if (timeSinceLastUse < COOLDOWN_SECONDS * 1000) {
                 long remainingSeconds = (COOLDOWN_SECONDS * 1000 - timeSinceLastUse) / 1000;
-                source.sendFeedback((Supplier<Text>) () -> Text.literal("Зачекай ще " + remainingSeconds + " секунд перед наступним використанням команди."), true);
+                source.sendFeedback((Supplier<Text>) () -> Text.literal("Зачекай ще " + remainingSeconds + " секунд перед наступним використанням команди."), false);
                 return 1;
             }
         }
@@ -94,7 +94,7 @@ public class SexCommand {
             long timeSinceLastUse = currentTime - lastUse;
             if (timeSinceLastUse < COOLDOWN_SECONDS * 1000) {
                 long remainingSeconds = (COOLDOWN_SECONDS * 1000 - timeSinceLastUse) / 1000;
-                source.sendFeedback((Supplier<Text>) () -> Text.literal("Зачекай ще " + remainingSeconds + " секунд перед наступним використанням команди."), true);
+                source.sendFeedback((Supplier<Text>) () -> Text.literal("Зачекай ще " + remainingSeconds + " секунд перед наступним використанням команди."), false);
                 return 1;
             }
         }
@@ -107,7 +107,7 @@ public class SexCommand {
         } else {
             targetEntity = getEntity(context, "target");
 
-            if (player.distanceTo(targetEntity) >= ppSize || !Permissions.check(source, KoshysUtiilCommands.MODID+".unlimited.sex")) {
+            if (player.distanceTo(targetEntity) >= ppSize && !Permissions.check(source, KoshysUtiilCommands.MODID+".unlimited.sex")) {
                 player.sendMessage(Text.of("Таких довгих пісюнів не буває!"), false);
                 return 1;
             }
@@ -121,10 +121,12 @@ public class SexCommand {
                 KoshysChatUtils.sendMessageToNearbyPlayers(world, playerPos,
                         player.getName().getString() + " трахнув сам себе.", 20, false);
             } else if (Permissions.check(source, KoshysUtiilCommands.MODID+".unlimited.sex") && player.distanceTo(targetEntity) >= ppSize) {
-                targetEntity.sendMessage(Text.of("Дотик з небес від + " + player.getName().getString()));
+                KoshysChatUtils.sendMessageToNearbyPlayers(world, targetEntity.getPos(),
+                        "Дотик з небес від " + player.getName().getString(), 20, false);
+                player.sendMessage(Text.of("Ти трахнув " + targetEntity.getName().getString() + " через всю карту."));
 
                 ItemStack ghastTear = new ItemStack(Items.GHAST_TEAR);
-                EffectManager.spawnItemAsEffect(world, player, new Vec3d(playerPos.x, playerPos.y + 0.5, playerPos.z),
+                EffectManager.spawnItemAsEffect(world, player, targetEntity.getPos(),
                         ghastTear, 5, "КУМ " + player.getName().getString(), 0, true, false);
             } else {
                 KoshysChatUtils.sendMessageToNearbyPlayers(world, playerPos,

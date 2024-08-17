@@ -70,6 +70,7 @@ public class EntityUtils {
         MOB_SOUNDS.put(EntityType.SILVERFISH, SoundEvents.ENTITY_SILVERFISH_HURT);
         MOB_SOUNDS.put(EntityType.CAVE_SPIDER, SoundEvents.ENTITY_SPIDER_HURT);
         MOB_SOUNDS.put(EntityType.WITHER, SoundEvents.ENTITY_WITHER_HURT);
+        MOB_SOUNDS.put(EntityType.ARMADILLO, SoundEvents.ENTITY_ARMADILLO_HURT);
     }
 
     public static SoundEvent getMobSound(EntityType<?> entityType) {

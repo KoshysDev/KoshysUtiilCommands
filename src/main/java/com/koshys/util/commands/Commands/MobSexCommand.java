@@ -71,7 +71,7 @@ public class MobSexCommand {
             long timeSinceLastUse = currentTime - lastUse;
             if (timeSinceLastUse < COOLDOWN_SECONDS * 1000) {
                 long remainingSeconds = (COOLDOWN_SECONDS * 1000 - timeSinceLastUse) / 1000;
-                source.sendFeedback((Supplier<Text>) () -> Text.literal("Зачекай ще " + remainingSeconds + " секунд перед наступним використанням команди."), true);
+                source.sendFeedback((Supplier<Text>) () -> Text.literal("Зачекай ще " + remainingSeconds + " секунд перед наступним використанням команди."), false);
                 return 1;
             }
         }
