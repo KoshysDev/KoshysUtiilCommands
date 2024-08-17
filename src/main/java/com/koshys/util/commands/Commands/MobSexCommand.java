@@ -60,7 +60,7 @@ public class MobSexCommand {
         EntityType<?> entityType = getEntityTypeByName(entityName);
 
         if (entityType == null) {
-            player.sendMessage(Text.of("Такого моба не інує: " + entityName), false);
+            player.sendMessage(Text.of("Такого моба не існує: " + entityName), false);
             return 0; // Failure
         }
 
@@ -72,7 +72,7 @@ public class MobSexCommand {
         }
 
         if (player.distanceTo(targetEntity) >= ppSize) {
-            player.sendMessage(Text.of("Таких довгих пісввюнів не буває!"), false);
+            player.sendMessage(Text.of("Таких довгих пісюнів не буває!"), false);
             return 1;
         }
 

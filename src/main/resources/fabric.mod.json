@@ -3,9 +3,9 @@
 	"id": "koshysutiilcommands",
 	"version": "${version}",
 	"name": "KoshysUtiilCommands",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Borukva commands.",
 	"authors": [
-		"Me!"
+		"Koshys"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",

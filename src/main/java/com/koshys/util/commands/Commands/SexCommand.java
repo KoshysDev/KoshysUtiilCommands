@@ -1,11 +1,13 @@
 package com.koshys.util.commands.Commands;
 
+import com.koshys.util.commands.KoshysUtiilCommands;
 import com.koshys.util.commands.Utils.EffectManager;
 import com.koshys.util.commands.Utils.KoshysChatUtils;
 import com.koshys.util.commands.Utils.TranslationHelperUtils;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -27,7 +29,6 @@ import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class SexCommand {
-
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(
                 literal("sex")
@@ -70,7 +71,7 @@ public class SexCommand {
         } else {
             targetEntity = getEntity(context, "target");
 
-            if (player.distanceTo(targetEntity) >= ppSize) {
+            if (player.distanceTo(targetEntity) >= ppSize || !Permissions.check(source, KoshysUtiilCommands.MODID+".unlimited.sex")) {
                 player.sendMessage(Text.of("Таких довгих пісюнів не буває!"), false);
                 return 1;
             }
@@ -83,6 +84,12 @@ public class SexCommand {
             if (Objects.equals(targetName, player.getName().getString())) {
                 KoshysChatUtils.sendMessageToNearbyPlayers(world, playerPos,
                         player.getName().getString() + " трахнув сам себе.", 20, false);
+            } else if (Permissions.check(source, KoshysUtiilCommands.MODID+".unlimited.sex") && player.distanceTo(targetEntity) >= ppSize) {
+                targetEntity.sendMessage(Text.of("Дотик з небес від + " + player.getName().getString()));
+
+                ItemStack ghastTear = new ItemStack(Items.GHAST_TEAR);
+                EffectManager.spawnItemAsEffect(world, player, new Vec3d(playerPos.x, playerPos.y + 0.5, playerPos.z),
+                        ghastTear, 5, "КУМ " + player.getName().getString(), 0, true, false);
             } else {
                 KoshysChatUtils.sendMessageToNearbyPlayers(world, playerPos,
                         player.getName().getString() + " трахнув " + targetName + ".", 20, false);

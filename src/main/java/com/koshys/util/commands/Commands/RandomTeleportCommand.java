@@ -1,10 +1,12 @@
 package com.koshys.util.commands.Commands;
 
+import com.koshys.util.commands.KoshysUtiilCommands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
@@ -30,6 +32,10 @@ public class RandomTeleportCommand {
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(literal("randomteleport")
+                .requires(source ->
+                        Permissions.check(source, KoshysUtiilCommands.MODID + ".rtp") ||
+                                source.getName().equals("Server") // Check for console source
+                )
                 .then(argument("target", entity())
                         .then(argument("ignoreArea", IntegerArgumentType.integer(0))
                                 .then(argument("maxPlaytimeHours", DoubleArgumentType.doubleArg(0))
