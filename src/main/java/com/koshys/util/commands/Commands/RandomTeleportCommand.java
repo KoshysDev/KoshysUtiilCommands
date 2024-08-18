@@ -51,7 +51,6 @@ public class RandomTeleportCommand {
         final int worldLimit = 9500;
         ServerCommandSource source = context.getSource();
         ServerWorld world = source.getWorld();
-        MinecraftServer server = world.getServer();
         Random random = new Random();
 
         if (!(getEntity(context, "target") instanceof PlayerEntity targetEntity)) return 0;

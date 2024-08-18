@@ -37,5 +37,9 @@ public class KoshysUtiilCommands implements ModInitializer {
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			MobSexCommand.register(dispatcher);
 		});
+
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+			TeleportCommand.register(dispatcher);
+		});
 	}
 }
