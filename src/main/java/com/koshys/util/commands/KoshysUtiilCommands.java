@@ -3,11 +3,6 @@ package com.koshys.util.commands;
 import com.koshys.util.commands.Commands.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.stat.StatFormatter;
-import net.minecraft.stat.Stats;
-import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

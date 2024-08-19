@@ -39,9 +39,11 @@ public class EffectManager {
 
         // Schedule the item entity to despawn after the specified duration
         scheduler.schedule(() -> {
-            if (!itemEntity.isRemoved()) {
-                itemEntity.remove(Entity.RemovalReason.KILLED);
-            }
+            world.getServer().execute(() -> { // Run removal on the server thread
+                if (!itemEntity.isRemoved()) {
+                    itemEntity.remove(Entity.RemovalReason.DISCARDED);
+                }
+            });
         }, durationSeconds, TimeUnit.SECONDS);
     }
 
